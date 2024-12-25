@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const User = require('./models/user');
+const User = require('./models/User');
 require('./routes/auth'); // Ensure auth.js is required to initialize Passport strategies
 const axios = require('axios');
 

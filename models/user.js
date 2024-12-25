@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-const User = mongoose.model('User', userSchema);
+// Prevent overwriting the model if it's already defined
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = User;

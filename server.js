@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const User = require('./models/User');
@@ -74,6 +75,17 @@ app.get('/api/weather', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch weather data' });
   }
 });
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,  
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60,  
+  }),
+}));
 
 // Start server
 app.listen(PORT, () => {

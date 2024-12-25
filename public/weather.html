@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Info</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Information</h1>
+    <div id="weather-data"></div>
+    <a href="/logout">Logout</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const city = urlParams.get('city');
+      if (city) {
+        fetch(`/api/weather?city=${city}`)
+          .then(response => response.json())
+          .then(data => {
+            const weatherDataDiv = document.getElementById('weather-data');
+            weatherDataDiv.innerHTML = `
+              <p>City: ${data.name}</p>
+              <p>Temperature: ${(data.main.temp - 273.15).toFixed(2)} °C</p>
+              <p>Weather: ${data.weather[0].description}</p>
+              <p>Humidity: ${data.main.humidity} %</p>
+              <p>Wind Speed: ${data.wind.speed} m/s</p>
+            `;
+          })
+          .catch(err => {
+            console.error('Error fetching weather data:', err);
+          });
+      }
+    });
+  </script>
+</body>
+</html>

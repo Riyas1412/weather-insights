@@ -6,20 +6,26 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 require('./routes/auth'); // Ensure auth.js is required to initialize Passport strategies
 const axios = require('axios');
+const MongoStore = require('connect-mongo');
 
 const app = express();
-const PORT = 10000;
+const PORT = process.env.PORT || 10000; // Use environment PORT if available
 
 // Middleware
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 

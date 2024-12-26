@@ -31,10 +31,12 @@ app.use(passport.session());
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  tls: true, // Ensure TLS/SSL is used
+  tls: true,
+  tlsInsecure: false, // Set true only for local debugging
 })
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+  .catch(err => console.error('MongoDB connection error:', err));
+
 
 // Routes
 app.get('/', (req, res) => res.sendFile(__dirname + '/public/welcome.html'));

@@ -9,7 +9,7 @@ require('./routes/auth'); // Ensure auth.js is required to initialize Passport s
 const axios = require('axios');
 
 const app = express();
-const PORT = 10000;
+const PORT = 3000;
 
 // Middleware
 app.use(express.static('public'));

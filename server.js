@@ -1,12 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
-const passport = require('passport');
-const mongoose = require('mongoose');
-const User = require('./models/User');
-require('./routes/auth'); // Ensure auth.js is required to initialize Passport strategies
 const axios = require('axios');
-const MongoStore = require('connect-mongo');
 
 const app = express();
 const PORT = process.env.PORT || 10000; // Use environment PORT if available
@@ -15,19 +9,6 @@ const PORT = process.env.PORT || 10000; // Use environment PORT if available
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
 
 // Routes
 app.get('/', (req, res) => {
@@ -35,49 +16,32 @@ app.get('/', (req, res) => {
 });
 
 app.get('/city', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/');
-  }
   res.sendFile(__dirname + '/public/city.html');
 });
 
 app.get('/weather', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/');
-  }
   res.sendFile(__dirname + '/public/weather.html');
 });
 
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/city');
-  }
-);
-
-app.get('/logout', (req, res) => {
-  req.logout(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
-});
-
 app.get('/api/weather', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
   const city = req.query.city || 'London';
   try {
     const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}`);
     res.json(response.data);
   } catch (error) {
+    console.error('Error fetching weather data:', error);
     res.status(500).json({ error: 'Failed to fetch weather data' });
+  }
+});
+
+app.get('/api/weather/forecast', async (req, res) => {
+  const city = req.query.city || 'London';
+  try {
+    const response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.WEATHER_API_KEY}`);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching weather forecast:', error);
+    res.status(500).json({ error: 'Failed to fetch forecast data' });
   }
 });
 

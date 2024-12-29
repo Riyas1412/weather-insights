@@ -1,6 +1,6 @@
 /* General Body Styles */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(to right, #007bff, #00d2ff); /* Vibrant gradient background */
   margin: 0;
   padding: 0;
@@ -8,49 +8,78 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  transition: background 0.5s ease-in-out; /* Smooth background transition */
 }
 
 /* Main Container */
 .container {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  max-width: 800px;
+  max-width: 900px;
   width: 90%;
   text-align: center;
+  transition: transform 0.3s ease-in-out; /* Smooth scaling on hover */
 }
+
 
 /* Page Header */
 h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
   color: #333;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #00d2ff; /* Color change on hover */
 }
 
 /* Weather Data Styles */
 #weather-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.weather-card {
   background-color: #f9f9f9; /* Neutral background for readability */
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 30px;
-  text-align: left;
-  font-size: 1.1rem; /* Consistent text size */
-  line-height: 1.6;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-/* Weather Data Paragraphs */
-#weather-data p {
+.weather-card:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.weather-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.weather-card:hover img {
+  transform: rotate(360deg); /* Rotate icon on hover */
+}
+
+.weather-card p {
+  font-size: 1.1rem;
   margin: 10px 0;
-  color: #333; /* High contrast for readability */
+  color: #333;
 }
 
-/* Highlighted Text */
-#weather-data p span {
+.weather-card p strong {
   font-weight: bold;
-  color: #007bff; /* Accent color for important info */
+  color: #007bff;
 }
 
 /* Chart Section */
@@ -63,7 +92,6 @@ h1 {
   text-align: center;
 }
 
-/* Chart Header */
 .chart-container h2 {
   font-size: 1.8rem;
   margin-bottom: 15px;
@@ -73,48 +101,65 @@ h1 {
 
 /* Chart Canvas */
 #temperatureChart {
-  max-width: 700px;
+  max-width: 100%; /* Ensure chart stretches across the container */
+  height: 450px; /* Increased height for a bigger chart */
   margin: 0 auto;
-  background: #f0f4f8; /* Subtle background for focus */
+  background: #f0f4f8;
   padding: 15px;
   border-radius: 10px;
   box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Rain Icon Section (Optional for Rain Chance Visualization) */
-#weather-data .rain-chance {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 1.2rem;
+/* Weather Background Images */
+body.sunny {
+  background-image: url('/images/sunny.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
-#weather-data .rain-chance img {
-  width: 25px;
-  height: 25px;
-  margin-right: 10px;
+body.rainy {
+  background-image: url('/images/rainy.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+body.cloudy {
+  background-image: url('/images/cloudy.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+body.default {
+  background-image: url('/images/default.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    width: 95%;
+  }
+
   h1 {
-      font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .chart-container h2 {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 
   #temperatureChart {
-      max-width: 100%;
+    height: 400px; /* Adjust chart size for smaller screens */
   }
 
-  #weather-data {
-      font-size: 1rem;
-      padding: 15px;
+  .weather-card p {
+    font-size: 1rem;
   }
 
-  #weather-data p span {
-      font-size: 1rem;
+  .weather-card img {
+    width: 50px;
+    height: 50px;
   }
 }

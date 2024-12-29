@@ -90,28 +90,6 @@ a:hover {
   color: #0056b3;
 }
 
-.logout-button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 20px;
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.logout-button:hover {
-  background-color: #c82333;
-  transform: scale(1.05);
-}
-
-.logout-button:active {
-  transform: scale(0.95);
-}
-
 .weather-info {
   font-size: 1.2rem;
   color: #333;
@@ -140,25 +118,28 @@ a:hover {
   max-width: 600px;
 }
 
-.login-button {
+.start-button {
   display: inline-block;
   padding: 15px 30px;
-  background-color: #4285F4; /* Google Blue */
+  background: linear-gradient(to right, #28a745, #218838);
   color: #fff;
-  border: none;
-  border-radius: 5px;
   font-size: 1.2rem;
+  font-weight: bold;
   text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.login-button:hover {
-  background-color: #357ae8;
-  transform: scale(1.05);
+.start-button:hover {
+  background: linear-gradient(to right, #218838, #1e7e34);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.login-button:active {
-  transform: scale(0.95);
+.start-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Chart Container Styles */

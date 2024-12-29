@@ -26,24 +26,25 @@ app.get('/weather', (req, res) => {
 app.get('/api/weather', async (req, res) => {
   const city = req.query.city || 'London';
   try {
-    const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}`);
+    const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    res.status(500).json({ error: 'Failed to fetch weather data' });
+    res.status(600).json({ error: 'Failed to fetch weather data' });
   }
 });
 
 app.get('/api/weather/forecast', async (req, res) => {
   const city = req.query.city || 'London';
   try {
-    const response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.WEATHER_API_KEY}`);
+    const response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching weather forecast:', error);
     res.status(500).json({ error: 'Failed to fetch forecast data' });
   }
 });
+
 
 // Start server
 app.listen(PORT, () => {

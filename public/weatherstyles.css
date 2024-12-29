@@ -1,131 +1,120 @@
 /* General Body Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #007bff, #00d2ff); /* Matching the original theme */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  /* Main Container */
-  .container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Original box-shadow */
-    max-width: 800px;
-    width: 90%;
-    text-align: center;
-  }
-  
-  /* Page Header */
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #007bff, #00d2ff); /* Vibrant gradient background */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Main Container */
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+}
+
+/* Page Header */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Weather Data Styles */
+#weather-data {
+  background-color: #f9f9f9; /* Neutral background for readability */
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: left;
+  font-size: 1.1rem; /* Consistent text size */
+  line-height: 1.6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Weather Data Paragraphs */
+#weather-data p {
+  margin: 10px 0;
+  color: #333; /* High contrast for readability */
+}
+
+/* Highlighted Text */
+#weather-data p span {
+  font-weight: bold;
+  color: #007bff; /* Accent color for important info */
+}
+
+/* Chart Section */
+.chart-container {
+  margin-top: 30px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Chart Header */
+.chart-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Chart Canvas */
+#temperatureChart {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #f0f4f8; /* Subtle background for focus */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Rain Icon Section (Optional for Rain Chance Visualization) */
+#weather-data .rain-chance {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+#weather-data .rain-chance img {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  /* Weather Data Styles */
-  #weather-data {
-    background-color: #f9f9f9; /* Slightly lighter shade for contrast */
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    text-align: left;
-    font-size: 1.1rem; /* Consistent font size with original */
-    line-height: 1.6;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  #weather-data p {
-    margin: 10px 0;
-    color: #333; /* Darker shade for better contrast */
-  }
-  
-  #weather-data p span {
-    font-weight: bold;
-    color: #007bff; /* Matching primary theme color */
-  }
-  
-  /* Chart Section */
-  .chart-container {
-    margin-top: 30px;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Consistent box-shadow */
-    text-align: center;
-  }
-  
-  .chart-container h2 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  #temperatureChart {
-    max-width: 700px;
-    margin: 0 auto;
-    background: #f0f4f8; /* Lighter background for better visibility */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Buttons */
-  button,
-  .logout-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  button:hover,
-  .logout-button:hover {
-    transform: scale(1.05);
-  }
-  
-  button:active,
-  .logout-button:active {
-    transform: scale(0.95);
-  }
-  
-  .logout-button {
-    background-color: #dc3545; /* Red for logout */
-    color: #fff;
-    margin-top: 20px;
-  }
-  
-  .logout-button:hover {
-    background-color: #c82333;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    h1 {
       font-size: 1.8rem;
-    }
-  
-    .chart-container h2 {
+  }
+
+  .chart-container h2 {
       font-size: 1.5rem;
-    }
-  
-    #temperatureChart {
+  }
+
+  #temperatureChart {
       max-width: 100%;
-    }
-  
-    #weather-data {
+  }
+
+  #weather-data {
       font-size: 1rem;
       padding: 15px;
-    }
   }
-  
+
+  #weather-data p span {
+      font-size: 1rem;
+  }
+}

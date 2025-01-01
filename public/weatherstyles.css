@@ -135,6 +135,49 @@ body.default {
   background-position: center;
 }
 
+#use-location {
+  background-color: #00d2ff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#use-location:hover {
+  background-color: #007bff;
+  transform: scale(1.1);
+}
+
+#loading {
+  display: none;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 10px;
+}
+
+#loading.active {
+  display: block;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.weather-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .container {

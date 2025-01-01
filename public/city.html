@@ -9,13 +9,38 @@
 <body>
   <div class="container">
     <h1>Select City for Weather</h1>
+
+    <!-- Manual Search Form -->
     <form action="/weather" method="get">
       <div class="form-group">
         <label for="city">City:</label>
-        <input type="text" id="city" name="city" required>
+        <input type="text" id="city" name="city" placeholder="Enter city name" required>
       </div>
       <button type="submit">Get Weather</button>
     </form>
+
+    <!-- "Use My Location" Button -->
+    <div class="location-button-container">
+      <button id="use-location">Use My Location</button>
+    </div>
   </div>
+
+  <script>
+    document.getElementById('use-location').addEventListener('click', async () => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+
+          // Redirect to weather page with location coordinates
+          window.location.href = `/weather?lat=${latitude}&lon=${longitude}`;
+        }, (error) => {
+          console.error('Error getting location:', error);
+          alert('Failed to access your location. Please allow location access in your browser.');
+        });
+      } else {
+        alert('Geolocation is not supported by your browser.');
+      }
+    });
+  </script>
 </body>
 </html>

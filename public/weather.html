@@ -25,7 +25,7 @@
 
       if (city) {
         try {
-          // Fetch current weather data
+          // Fetch current weather data from backend API
           const weatherResponse = await fetch(`/api/weather?city=${city}`);
           const weatherData = await weatherResponse.json();
 
@@ -36,7 +36,7 @@
           const weatherDataDiv = document.getElementById('weather-data');
           const weatherDetails = [
             { label: 'City:', value: weatherData.name },
-            { label: 'Temperature:', value: `${(weatherData.main.temp - 273.15).toFixed(2)} °C` },
+            { label: 'Temperature:', value: `${(weatherData.main.temp).toFixed(2)} °C` },
             { label: 'Weather:', value: weatherData.weather[0].main },
             { label: 'Humidity:', value: `${weatherData.main.humidity} %` },
             { label: 'Wind Speed:', value: `${weatherData.wind.speed} m/s` },
@@ -49,9 +49,7 @@
           weatherDetails.forEach(item => {
             const card = document.createElement('div');
             card.classList.add('weather-card');
-            card.innerHTML = `
-              <p><strong>${item.label}</strong> ${item.value}</p>
-            `;
+            card.innerHTML = `<p><strong>${item.label}</strong> ${item.value}</p>`;
             weatherDataDiv.appendChild(card);
           });
 
@@ -63,7 +61,7 @@
           const labels = forecastData.list.map(entry =>
             new Date(entry.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           );
-          const temps = forecastData.list.map(entry => (entry.main.temp - 273.15).toFixed(1));
+          const temps = forecastData.list.map(entry => (entry.main.temp).toFixed(1));
 
           // Render temperature chart
           new Chart(document.getElementById('temperatureChart'), {

@@ -22,83 +22,81 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const city = urlParams.get('city');
-      const lat = urlParams.get('lat');
-      const lon = urlParams.get('lon');
 
-      let weatherData;
       if (city) {
-        // Fetch data using city
-        const weatherResponse = await fetch(`/api/weather?city=${city}`);
-        weatherData = await weatherResponse.json();
-      } else if (lat && lon) {
-        // Fetch data using location coordinates
-        const weatherResponse = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
-        weatherData = await weatherResponse.json();
-      }
+        try {
+          // Fetch current weather data
+          const weatherResponse = await fetch(`/api/weather?city=${city}`);
+          const weatherData = await weatherResponse.json();
 
-      if (weatherData) {
-        // Set dynamic background based on weather
-        setBackground(weatherData.weather[0].main);
+          // Set dynamic background based on weather
+          setBackground(weatherData.weather[0].main);
 
-        // Create weather data elements without images
-        const weatherDataDiv = document.getElementById('weather-data');
-        const weatherDetails = [
-          { label: 'City:', value: weatherData.name },
-          { label: 'Temperature:', value: `${(weatherData.main.temp).toFixed(2)} °C` },
-          { label: 'Weather:', value: weatherData.weather[0].main },
-          { label: 'Humidity:', value: `${weatherData.main.humidity} %` },
-          { label: 'Wind Speed:', value: `${weatherData.wind.speed} m/s` },
-          { label: 'Rain Chance:', value: weatherData.rain ? `${weatherData.rain['1h'] || 0}%` : 'No rain expected' },
-          { label: 'Visibility:', value: `${(weatherData.visibility / 1000).toFixed(1)} km` },
-          { label: 'Sunrise:', value: new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString() },
-          { label: 'Sunset:', value: new Date(weatherData.sys.sunset * 1000).toLocaleTimeString() }
-        ];
+          // Create weather data elements without images
+          const weatherDataDiv = document.getElementById('weather-data');
+          const weatherDetails = [
+            { label: 'City:', value: weatherData.name },
+            { label: 'Temperature:', value: `${(weatherData.main.temp - 273.15).toFixed(2)} °C` },
+            { label: 'Weather:', value: weatherData.weather[0].main },
+            { label: 'Humidity:', value: `${weatherData.main.humidity} %` },
+            { label: 'Wind Speed:', value: `${weatherData.wind.speed} m/s` },
+            { label: 'Rain Chance:', value: weatherData.rain ? `${weatherData.rain['1h'] || 0}%` : 'No rain expected' },
+            { label: 'Visibility:', value: `${(weatherData.visibility / 1000).toFixed(1)} km` },
+            { label: 'Sunrise:', value: new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString() },
+            { label: 'Sunset:', value: new Date(weatherData.sys.sunset * 1000).toLocaleTimeString() }
+          ];
 
-        weatherDetails.forEach(item => {
-          const card = document.createElement('div');
-          card.classList.add('weather-card');
-          card.innerHTML = `<p><strong>${item.label}</strong> ${item.value}</p>`;
-          weatherDataDiv.appendChild(card);
-        });
+          weatherDetails.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('weather-card');
+            card.innerHTML = `
+              <p><strong>${item.label}</strong> ${item.value}</p>
+            `;
+            weatherDataDiv.appendChild(card);
+          });
 
-        // Fetch forecast data for the chart
-        const forecastResponse = await fetch(`/api/weather/forecast?city=${city || ''}`);
-        const forecastData = await forecastResponse.json();
+          // Fetch forecast data for the chart
+          const forecastResponse = await fetch(`/api/weather/forecast?city=${city}`);
+          const forecastData = await forecastResponse.json();
 
-        // Prepare data for the temperature chart
-        const labels = forecastData.list.map(entry =>
-          new Date(entry.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        );
-        const temps = forecastData.list.map(entry => (entry.main.temp).toFixed(1));
+          // Prepare data for the temperature chart
+          const labels = forecastData.list.map(entry =>
+            new Date(entry.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          );
+          const temps = forecastData.list.map(entry => (entry.main.temp - 273.15).toFixed(1));
 
-        // Render temperature chart
-        new Chart(document.getElementById('temperatureChart'), {
-          type: 'line',
-          data: {
-            labels,
-            datasets: [
-              {
-                label: 'Temperature (°C)',
-                data: temps,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              tooltip: {
-                callbacks: {
-                  label: function (tooltipItem) {
-                    return `${tooltipItem.raw} °C`;
+          // Render temperature chart
+          new Chart(document.getElementById('temperatureChart'), {
+            type: 'line',
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: 'Temperature (°C)',
+                  data: temps,
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (tooltipItem) {
+                      return `${tooltipItem.raw} °C`;
+                    }
                   }
                 }
               }
             }
-          }
-        });
+          });
+
+        } catch (error) {
+          console.error('Error fetching weather data:', error);
+        }
       }
     });
 

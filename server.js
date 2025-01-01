@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10000; // Use environment PORT if available
 
 // Middleware
 app.use(express.static('public'));
@@ -19,29 +19,18 @@ app.get('/city', (req, res) => {
   res.sendFile(__dirname + '/public/city.html');
 });
 
-app.get('/weather', async (req, res) => {
-  const { city, lat, lon } = req.query;
+app.get('/weather', (req, res) => {
+  res.sendFile(__dirname + '/public/weather.html');
+});
 
-  if (!city && (!lat || !lon)) {
-    return res.redirect('/city'); // Redirect back to the city selection page if no city or coordinates
-  }
-
+app.get('/api/weather', async (req, res) => {
+  const city = req.query.city || 'London';
   try {
-    let weatherData;
-
-    if (lat && lon) {
-      const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-      weatherData = response.data;
-    } else if (city) {
-      const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-      weatherData = response.data;
-    }
-
-    // Instead of returning JSON, redirect to weather.html and pass data to the front-end
-    res.redirect(`/weather.html?city=${weatherData.name}&lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}`);
+    const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+    res.json(response.data);
   } catch (error) {
-    console.error('Error fetching weather data:', error.message);
-    res.status(500).send('Failed to fetch weather data');
+    console.error('Error fetching weather data:', error);
+    res.status(600).json({ error: 'Failed to fetch weather data' });
   }
 });
 
@@ -55,6 +44,7 @@ app.get('/api/weather/forecast', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch forecast data' });
   }
 });
+
 
 // Start server
 app.listen(PORT, () => {

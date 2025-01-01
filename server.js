@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 10000; // Use environment PORT if available
+const PORT = process.env.PORT || 10000;
 
 // Middleware
 app.use(express.static('public'));
@@ -22,27 +22,26 @@ app.get('/city', (req, res) => {
 app.get('/weather', async (req, res) => {
   const { city, lat, lon } = req.query;
 
+  if (!city && (!lat || !lon)) {
+    return res.redirect('/city'); // Redirect back to the city selection page if no city or coordinates
+  }
+
   try {
     let weatherData;
 
-    // Handle location-based search
     if (lat && lon) {
       const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
       weatherData = response.data;
     } else if (city) {
-      // Handle manual city search
       const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
       weatherData = response.data;
-    } else {
-      // Default response for missing query params
-      return res.status(400).send('City or location coordinates must be provided');
     }
 
-    // Serve the weather.html with dynamic weather data
-    res.json(weatherData);
+    // Instead of returning JSON, redirect to weather.html and pass data to the front-end
+    res.redirect(`/weather.html?city=${weatherData.name}&lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}`);
   } catch (error) {
     console.error('Error fetching weather data:', error.message);
-    res.status(500).json({ error: 'Failed to fetch weather data' });
+    res.status(500).send('Failed to fetch weather data');
   }
 });
 
